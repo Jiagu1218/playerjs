@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+}
+.timeSlider{
+    margin: 20px;
+    width: 100%;
+}
+.img{
+    max-width: 90%;
+    max-height: 400px;
+    z-index: -1;
+    padding-top: 20px;
+    overflow: hidden ;
+}
+.timeProgress{
+    width: 70%;
+    stroke-width:10px;
+    secondary-color:lightskyblue;
+    margin: 20px;
+}
+.title {
+    text-overflow: ellipsis;
+    max-lines: 1;
+}
+
+.audioBtn{
+    height: 40px;
+    width: 40px;
+    margin-left: 20px;
+    margin-right: 20px;
+}

@@ -1,0 +1,29 @@
+<element name="asmr_card" src="../asmr_card/asmr_card.hml"></element>
+<element name="player" src="../player/player.hml"></element>
+
+<div class="container">
+    <tabs index="{{tabsIndex}}" @change="tabsChange">
+        <tab-content>
+            <div class="tab-content">
+                <stack>
+                    <list cachedcount="4" @requestitem="requestItem" id="asmrlist">
+                        <list-item for="{{listData}}" id="{{$item.id}}" @longpress="itemLongPress({{$item}})">
+                            <asmr_card item="{{$item}}"></asmr_card>
+                        </list-item>
+                        <list-item if="{{ loading }}" id="-2">
+                            <text>加载中</text>
+                        </list-item>
+                    </list>
+                    <button class="top-button" @click="top">top</button>
+                </stack>
+            </div>
+            <div class="tab-content">
+                <player music="{{currentMusic}}"></player>
+            </div>
+        </tab-content>
+        <tab-bar>
+            <text>列表</text>
+            <text>播放</text>
+        </tab-bar>
+    </tabs>
+</div>

@@ -1,0 +1,20 @@
+<div class="container">
+    <block if="{{item.pageUrl != undefined}}">
+        <text class="title">
+            {{ item.title }}
+        </text>
+        <image class="img" src="{{item.imgUrl}}"></image>
+<!--        <slider class="timeSlider" vulue="{{status.percent}}" max="{{status.max}}" step="1" ></slider>-->
+        <progress class="timeProgress" percent="{{status.percent}}" ></progress>
+        <div>
+            <button  class="audioBtn" @click="startPlay({{item.musicUrl}})" if="{{!status.playing}}">播放</button>
+            <button class="audioBtn" @click="pausedPlay" if="{{status.playing}}">暂停</button>
+<!--            <button class="audioBtn" >返回</button>-->
+            <button @click="setLoop" class="audioBtn">循环:{{status.loop?'开':'关'}}</button>
+        </div>
+    </block>
+    <block else>
+        <text>找不到对应页面链接</text>
+        <text>换一首试试吧</text>
+    </block>
+</div>

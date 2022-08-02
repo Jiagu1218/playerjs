@@ -1,0 +1,29 @@
+
+text{
+    font-size: 15px;
+}
+.title {
+    position: absolute;
+    max-lines: 1;
+    text-overflow: ellipsis;
+}
+
+.img{
+    z-index: -1;
+    padding-top: 20px;
+    overflow: hidden ;
+}
+
+.imgText{
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
+    color: red;
+}
+
+.time{
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    color: red;
+}
