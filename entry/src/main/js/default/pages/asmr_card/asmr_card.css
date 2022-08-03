@@ -1,17 +1,28 @@
+.container {
+/*    margin: 20px;*/
+    border-radius: 20px;
+    flex-direction: column;
 
+}
+.img-div{
+    border-radius: 15px;
+    margin: 10px 20px 20px 20px;
+    box-shadow: 10px 10px 10px 0px #C9C9C9;
+}
 text{
     font-size: 20px;
+    border-radius: 5px;
 }
 .title {
-    position: absolute;
     max-lines: 1;
     text-overflow: ellipsis;
+    width: 100%;
 }
 
 .img{
-    z-index: -1;
-    padding-top: 30px;
-    overflow: hidden ;
+/*    z-index: -1;*/
+    overflow: hidden;
+    border-radius: 15px;
 }
 
 .views{

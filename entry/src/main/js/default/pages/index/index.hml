@@ -18,7 +18,7 @@
                             </select>
                         </div>
                         <list cachedcount="4" @requestitem="requestItem" id="asmrlist">
-                            <list-item for="{{listData}}" id="{{$item.id}}" @longpress="itemLongPress({{$item}})">
+                            <list-item click-effect="spring-large" for="{{listData}}" id="{{$item.id}}" @longpress="itemLongPress({{$item}})">
                                 <asmr_card item="{{$item}}"></asmr_card>
                             </list-item>
                             <list-item if="{{ loading }}" id="-2">
