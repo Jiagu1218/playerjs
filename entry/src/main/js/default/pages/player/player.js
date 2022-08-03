@@ -1,4 +1,6 @@
 import media from '@ohos.multimedia.media'
+import prompt from '@system.prompt'
+import request from '@ohos.request'
 
 export default {
     props:['music'],
@@ -7,7 +9,8 @@ export default {
             //定时任务id
             intervalId:-1,
             item:this.music,
-            audio:media.createAudioPlayer(),
+//            audio:media.createAudioPlayer(),
+            audio:null,
             status: {
                 playing:false,
                 loop:false,
@@ -25,56 +28,63 @@ export default {
             this.$set('item',newMusic )
         })
         this.$watch('item',(newItem)=>{
-            let state = this.audio.state
-            if(state != 'idle'){
-                //空闲
-                this.audio.stop()
+            if (this.audio != null){
+                let state = this.audio.state
+                if(state != 'idle'){
+                    //空闲
+                    this.audio.stop()
+                }
             }
         })
     },
     computed:{
-
     },
     onAttached(){
-        console.log('player onAttached')
-        this.audio.on("dataLoad",()=>{
-            if(this.audio.state == 'idle'){
-                this.audio.play()
+    },
+    initAudio(){
+        let audio = media.createAudioPlayer()
+        audio.on("dataLoad",()=>{
+            if(audio.state == 'idle'){
+                audio.play()
             }
         })
-        this.audio.on("play",()=>{
+        audio.on("play",()=>{
             console.debug("播放")
             this.$set('status.playing', true)
-            this.$set('status.max', this.audio.duration%1000)
+            this.$set('status.max', audio.duration%1000)
             this.intervalId=setInterval(()=>{
-                let percent = ((this.audio.currentTime) / (this.audio.duration)) * 100
+                let percent = ((audio.currentTime) / (audio.duration)) * 100
                 this.$set('status.percent',percent)
-//                this.status.percent = this.audio.currentTime%1000
+                //                this.status.percent = this.audio.currentTime%1000
             },1000)
         })
-        this.audio.on("finish",()=>{
+        audio.on("finish",()=>{
             clearInterval(this.intervalId)
             this.$set('status.playing',false)
-            this.audio.reset()
+            audio.reset()
         })
-        this.audio.on("pause",()=>{
-            clearInterval(this.intervalId)
-            this.$set('status.playing',false)
-        })
-        this.audio.on('stop',()=>{
-            clearInterval(this.intervalId)
-            this.$set('status.playing',false)
-            this.audio.reset()
-        })
-        this.audio.on('reset',()=>{
+        audio.on("pause",()=>{
             clearInterval(this.intervalId)
             this.$set('status.playing',false)
         })
-        this.audio.on("error",(error)=>{
+        audio.on('stop',()=>{
+            clearInterval(this.intervalId)
+            this.$set('status.playing',false)
+            audio.reset()
+        })
+        audio.on('reset',()=>{
+            clearInterval(this.intervalId)
+            this.$set('status.playing',false)
+            audio.release()
+            audio = null
+            this.$set('audio',null)
+        })
+        audio.on("error",(error)=>{
             console.info(`audio error called, errName is ${error.name}`);      //打印错误类型名称
             console.info(`audio error called, errCode is ${error.code}`);      //打印错误码
             console.info(`audio error called, errMessage is ${error.message}`);//打印错误类型详细描述
         })
+        this.$set('audio', audio)
     },
     sliderChange(e){
 
@@ -88,6 +98,9 @@ export default {
         console.log("distance",e.distance)
     },
     startPlay(url){
+        if(this.audio == null){
+            this.initAudio()
+        }
         let state = this.audio.state
         if(state=='playing'){
             //播放中
@@ -115,5 +128,21 @@ export default {
         console.log('销毁')
         this.stopPlay()
         this.audio.release()
+    },
+    download(url){
+        //todo 文件下载
+        if(url.length > 0){
+            request.download({
+                url: url,
+                enableMetered:true
+            }).then((task)=>{
+                task.on('progress',(receiveSize,totalSize)=>{
+                    console.log(receiveSize)
+                    console.log(totalSize)
+                })
+            }).catch((error)=>{
+                prompt.showToast({message: error.message, duration:5000});
+            })
+        }
     }
 }

@@ -17,7 +17,7 @@
                                 <option for="{{(index,item) in menuOptions}}" value="{{index}}">{{item.content}}</option>
                             </select>
                         </div>
-                        <list cachedcount="4" @requestitem="requestItem" id="asmrlist" updateeffect="true">
+                        <list cachedcount="4" @requestitem="requestItem" id="asmrlist">
                             <list-item for="{{listData}}" id="{{$item.id}}" @longpress="itemLongPress({{$item}})">
                                 <asmr_card item="{{$item}}"></asmr_card>
                             </list-item>

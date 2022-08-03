@@ -1,4 +1,4 @@
-
+import prompt from '@system.prompt'
 
 export default {
     data: {
@@ -13,13 +13,13 @@ export default {
         searchText: '',
         currentMusic:
         {
-//            "articleId":53025,
-//            "duration":"01:26:25",
-//            "heart":"34","id":53025,
-//            "imgUrl":"https://www.hentaiasmr.moe/wp-content/uploads/2022/07/rj403255_img_main.jpg",
-//            "musicUrl":"","pageUrl":"https://www.hentaiasmr.moe/rj403255/",
-//            "title":"[RJ403255] 【甘々孕ませ性活】貴方を想い性処理までしてくれる敏感体質の歳上メイド!～セックス以外ならどんな事でもして差し上げます♪～",
-//            "views":"4K"
+            "articleId":53025,
+            "duration":"01:26:25",
+            "heart":"34","id":53025,
+            "imgUrl":"https://www.hentaiasmr.moe/wp-content/uploads/2022/07/rj403255_img_main.jpg",
+            "musicUrl":"","pageUrl":"https://www.hentaiasmr.moe/rj403255/",
+            "title":"[RJ403255] 【甘々孕ませ性活】貴方を想い性処理までしてくれる敏感体質の歳上メイド!～セックス以外ならどんな事でもして差し上げます♪～",
+            "views":"4K"
         }
     },
     onInit() {
@@ -128,6 +128,8 @@ export default {
                 this.$set('currentMusic',item)
                 this.$set('tabsIndex',1)
             })
+        }else{
+            prompt.showToast({message:'搜索不到对应资源',duration:3000})
         }
 
     },
