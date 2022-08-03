@@ -9,12 +9,12 @@ export default {
             //定时任务id
             intervalId:-1,
             item:this.music,
-//            audio:media.createAudioPlayer(),
             audio:null,
             status: {
                 playing:false,
                 loop:false,
                 percent:0,
+                sliderValue:0,
                 max:100
             }
         }
@@ -51,11 +51,12 @@ export default {
         audio.on("play",()=>{
             console.debug("播放")
             this.$set('status.playing', true)
-            this.$set('status.max', audio.duration%1000)
+            this.$set('status.max', audio.duration)
             this.intervalId=setInterval(()=>{
-                let percent = ((audio.currentTime) / (audio.duration)) * 100
-                this.$set('status.percent',percent)
-                //                this.status.percent = this.audio.currentTime%1000
+//                let percent = ((audio.currentTime) / (audio.duration)) * 100
+//                this.$set('status.percent',percent)
+                this.$set('status.sliderValue',audio.currentTime)
+                //this.status.percent = this.audio.currentTime%1000
             },1000)
         })
         audio.on("finish",()=>{
@@ -87,10 +88,9 @@ export default {
         this.$set('audio', audio)
     },
     sliderChange(e){
-
         if(e.mode == 'end'){  /*当前动作 start 开始  move 移动中   end 结束*/
             console.log("value",e.value)  /*当前slider的进度值*/
-
+            this.audio.seek(e.value)
         }
     },
     progressSwift(e){

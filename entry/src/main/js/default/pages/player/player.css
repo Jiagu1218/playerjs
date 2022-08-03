@@ -9,8 +9,8 @@
     height: 100%;
 }
 .timeSlider{
-    margin: 20px;
     width: 100%;
+    margin-top: 5px;
 }
 .img{
     max-width: 90%;
@@ -35,4 +35,20 @@
     width: 40px;
     margin-left: 20px;
     margin-right: 20px;
+}
+
+.time-div{
+    margin-top: 20px;
+    width: 100%;
+}
+.time{
+    font-size: 12px;
+}
+.time-left{
+    position: absolute;
+    left: 5px;
+}
+.time-right{
+    position: absolute;
+    right: 5px;
 }
