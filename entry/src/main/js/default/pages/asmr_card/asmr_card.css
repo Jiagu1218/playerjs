@@ -1,6 +1,6 @@
 
 text{
-    font-size: 15px;
+    font-size: 20px;
 }
 .title {
     position: absolute;
@@ -10,11 +10,13 @@ text{
 
 .img{
     z-index: -1;
-    padding-top: 20px;
+    padding-top: 30px;
     overflow: hidden ;
 }
 
-.imgText{
+.views{
+    background-color: azure;
+    opacity: 0.5;
     position: absolute;
     left: 5px;
     bottom: 5px;
@@ -22,6 +24,8 @@ text{
 }
 
 .time{
+    background-color: azure;
+    opacity: 0.5;
     position: absolute;
     right: 5px;
     bottom: 5px;

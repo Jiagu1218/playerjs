@@ -29,6 +29,7 @@ export default {
         })
         this.$watch('item',(newItem)=>{
             if (this.audio != null){
+                this.$set('status.sliderValue',0)
                 let state = this.audio.state
                 if(state != 'idle'){
                     //空闲
@@ -120,6 +121,9 @@ export default {
         this.audio.pause()
     },
     setLoop(){
+        if(this.audio==null){
+            this.initAudio()
+        }
         this.audio.loop = !this.status.loop
         this.$set('status.loop', this.audio.loop)
     },

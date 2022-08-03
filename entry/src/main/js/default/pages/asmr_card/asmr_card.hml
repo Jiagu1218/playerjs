@@ -1,6 +1,6 @@
 <div class="container">
     <text class="title">{{item.title}}</text>
     <image class="img" src="{{item.imgUrl}}"></image>
-    <text class="imgText">{{item.views}}</text>
+    <text class="views">{{item.views}}</text>
     <text class="time">{{item.duration}}</text>
 </div>
