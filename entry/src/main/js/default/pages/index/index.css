@@ -30,6 +30,23 @@
     bottom:50px;
     right: 20px;
 }
+.list-container{
+    flex-direction: column;
+}
+.search{
+/*    width: 100%;*/
+}
+#orderBtn{
+    font-size: 16fp;
+    text-align: center;
+    margin-left: 20px;
+    margin-right: 5px;
+    color: blue;
+    width: 60px;
+}
+.orderSelect{
+    width: 140px;
+}
 
 @media screen and (device-type: tablet) and (orientation: landscape) {
     .title {

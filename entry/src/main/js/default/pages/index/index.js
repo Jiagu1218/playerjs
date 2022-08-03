@@ -2,12 +2,15 @@
 
 export default {
     data: {
+        menuOptions:[{content: '日期'},{content: '时长'},{content: '观看数'},{content: '热度'},{content: '随机'}],
         pageIndex:1,
         loading:false,
         tabsIndex:0,
         listData:[
             {"articleId":53025,"duration":"01:26:25","heart":"34","id":53025,"imgUrl":"https://www.hentaiasmr.moe/wp-content/uploads/2022/07/rj403255_img_main.jpg","musicUrl":"","pageUrl":"https://www.hentaiasmr.moe/rj403255/","title":"[RJ403255] 【甘々孕ませ性活】貴方を想い性処理までしてくれる敏感体質の歳上メイド!～セックス以外ならどんな事でもして差し上げます♪～","views":"4K"}
         ],
+        filter:'',
+        searchText: '',
         currentMusic:
         {
 //            "articleId":53025,
@@ -21,6 +24,13 @@ export default {
     },
     onInit() {
 
+    },
+    resetList(){
+        if(this.pageIndex != 1){
+            this.$set('pageIndex',1)
+        }else{
+            this.getList(1)
+        }
     },
     onReady(){
         this.getList(this.pageIndex)
@@ -38,14 +48,15 @@ export default {
             abilityType:1,
             data: {
                 pageIndex:index,
-                filter:'',
-                search:''
+                filter:this.filter,
+                search:this.searchText
             },
             syncOption:0
         }).then((result)=>{
             let rj = JSON.parse(result)
             if(this.pageIndex == 1){
                 this.$set('listData',rj)
+                this.top()
             }else{
                 this.listData.push(...rj)
             }
@@ -132,5 +143,31 @@ export default {
     },
     top(){
         this.$element('asmrlist').scrollTop({smooth: true})
+    },
+    orderSelect(e){
+
+        let value = parseInt(e.newValue,0)
+        let filter
+        switch (value) {
+            case 0: filter = 'latest'
+                break;
+            case 1: filter = 'longest'
+                break;
+            case 2: filter = 'most-viewed'
+                break;
+            case 3: filter = 'popular'
+                break;
+            case 4: filter = 'random'
+                break;
+            default: filter = ''
+                break;
+        }
+        this.$set('filter', filter)
+        this.resetList()
+    },
+    searchSubmit(e){
+        console.log(JSON.stringify(e))
+        this.$set('searchText', e.text.trim())
+        this.resetList()
     }
 }

@@ -6,14 +6,26 @@
         <tab-content>
             <div class="tab-content">
                 <stack>
-                    <list cachedcount="4" @requestitem="requestItem" id="asmrlist">
-                        <list-item for="{{listData}}" id="{{$item.id}}" @longpress="itemLongPress({{$item}})">
-                            <asmr_card item="{{$item}}"></asmr_card>
-                        </list-item>
-                        <list-item if="{{ loading }}" id="-2">
-                            <text>加载中</text>
-                        </list-item>
-                    </list>
+                    <div class="list-container">
+                        <div>
+                            <search class="search" hint="请输入关键词" searchbutton="搜索" @submit="searchSubmit"></search>
+<!--                            <text id="orderBtn" >排序</text>-->
+<!--                            <menu target="orderBtn" >-->
+<!--                                <option for="{{(index,item) in menuOptions}}" value="{{index}}}">{{item.content}}</option>-->
+<!--                            </menu>-->
+                            <select class="orderSelect" @change="orderSelect">
+                                <option for="{{(index,item) in menuOptions}}" value="{{index}}">{{item.content}}</option>
+                            </select>
+                        </div>
+                        <list cachedcount="4" @requestitem="requestItem" id="asmrlist" updateeffect="true">
+                            <list-item for="{{listData}}" id="{{$item.id}}" @longpress="itemLongPress({{$item}})">
+                                <asmr_card item="{{$item}}"></asmr_card>
+                            </list-item>
+                            <list-item if="{{ loading }}" id="-2">
+                                <text>加载中</text>
+                            </list-item>
+                        </list>
+                    </div>
                     <button class="top-button" @click="top">top</button>
                 </stack>
             </div>
