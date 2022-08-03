@@ -1,4 +1,3 @@
-import router from '@system.router';
 import media from '@ohos.multimedia.media'
 
 export default {
@@ -17,19 +16,23 @@ export default {
             }
         }
     },
+    onHide(){
+
+    },
     onInit() {
         console.log('player onInit')
-        this.$watch('music',(newValue)=>{this.item = newValue})
-        this.$watch('item',(newMusic)=>{
+        this.$watch('music',(newMusic)=>{
+            this.$set('item',newMusic )
+        })
+        this.$watch('item',(newItem)=>{
             let state = this.audio.state
             if(state != 'idle'){
                 //空闲
                 this.audio.stop()
             }
         })
-
-        this.title = "Hello World";
-
+    },
+    computed:{
 
     },
     onAttached(){
@@ -41,40 +44,37 @@ export default {
         })
         this.audio.on("play",()=>{
             console.debug("播放")
-            this.status.playing = true
-            this.status.max = this.audio.duration%1000
+            this.$set('status.playing', true)
+            this.$set('status.max', this.audio.duration%1000)
             this.intervalId=setInterval(()=>{
+                let percent = ((this.audio.currentTime) / (this.audio.duration)) * 100
+                this.$set('status.percent',percent)
 //                this.status.percent = this.audio.currentTime%1000
-                this.status.percent = ((this.audio.currentTime) / (this.audio.duration)) * 100
             },1000)
         })
         this.audio.on("finish",()=>{
             clearInterval(this.intervalId)
-            this.status.playing = false
+            this.$set('status.playing',false)
             this.audio.reset()
         })
         this.audio.on("pause",()=>{
             clearInterval(this.intervalId)
-            this.status.playing = false
+            this.$set('status.playing',false)
         })
         this.audio.on('stop',()=>{
             clearInterval(this.intervalId)
-            this.status.playing = false
+            this.$set('status.playing',false)
             this.audio.reset()
         })
         this.audio.on('reset',()=>{
             clearInterval(this.intervalId)
-            this.status.playing = false
-//            this.audio.release();
+            this.$set('status.playing',false)
         })
         this.audio.on("error",(error)=>{
             console.info(`audio error called, errName is ${error.name}`);      //打印错误类型名称
             console.info(`audio error called, errCode is ${error.code}`);      //打印错误码
             console.info(`audio error called, errMessage is ${error.message}`);//打印错误类型详细描述
         })
-    },
-    onShow(){
-
     },
     sliderChange(e){
 
@@ -96,28 +96,19 @@ export default {
             //空闲
             this.audio.src = url
 //            this.audio.src = 'https://cdn-132.anonfiles.com/X4d7E31ey6/d375d590-1659380371/RJ405681.mp3'
-
         }
         this.audio.play()
-        //        this.status.playing = true
+
     },
     stopPlay(){
         this.audio.stop()
-        //        this.status.playing = false
     },
     pausedPlay(){
         this.audio.pause()
-        //        this.status.playing = false
-    },
-    goBack(){
-        router.back()
-    },
-    audioPlayer(url){
-
     },
     setLoop(){
         this.audio.loop = !this.status.loop
-        this.status.loop = this.audio.loop
+        this.$set('status.loop', this.audio.loop)
     },
     onDestroy(){
         clearInterval(this.intervalId)
