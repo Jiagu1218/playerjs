@@ -48,6 +48,12 @@
     width: 140px;
 }
 
+.loading-item{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 @media screen and (device-type: tablet) and (orientation: landscape) {
     .title {
         font-size: 100px;

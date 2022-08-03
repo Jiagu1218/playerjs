@@ -21,8 +21,9 @@
                             <list-item click-effect="spring-large" for="{{listData}}" id="{{$item.id}}" @longpress="itemLongPress({{$item}})">
                                 <asmr_card item="{{$item}}"></asmr_card>
                             </list-item>
-                            <list-item if="{{ loading }}" id="-2">
-                                <text>加载中</text>
+                            <list-item class="loading-item" if="{{ loading }}" id="-2">
+<!--                                <progress type="ring"></progress>-->
+                                <text>加载中...</text>
                             </list-item>
                         </list>
                     </div>
