@@ -7,17 +7,27 @@
     top: 0px;
     width: 100%;
     height: 100%;
+    box-shadow: 10px 10px 10px 0px #C9C9C9;
+
 }
 .timeSlider{
     width: 100%;
     margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 .img{
-    max-width: 90%;
-    max-height: 400px;
-    z-index: -1;
-    padding-top: 20px;
-    overflow: hidden ;
+    max-width: 560px;
+    max-height: 420px;
+    overflow: hidden;
+    border-radius: 30px;
+
+
+}
+.img-div{
+    border-radius: 30px;
+    margin: 20px;
+    box-shadow: 10px 10px 10px 0px #C9C9C9;
 }
 .timeProgress{
     width: 70%;
@@ -26,6 +36,8 @@
     margin: 20px;
 }
 .title {
+    margin-left: 10px;
+    margin-right: 10px;
     text-overflow: ellipsis;
     max-lines: 1;
 }
@@ -35,6 +47,7 @@
     width: 40px;
     margin-left: 20px;
     margin-right: 20px;
+    box-shadow: 10px 10px 10px 0px #C9C9C9;
 }
 
 .time-div{
