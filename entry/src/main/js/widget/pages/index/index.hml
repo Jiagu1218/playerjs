@@ -1,11 +1,12 @@
 <div class="container">
     <stack>
+        <!--todo 页面跳转 -->
         <div class="container-img">
-            <image src="/common/ic_default_image@3x.png" class="bg-img" onclick="routerEvent"></image>
+            <image src="{{musicInfo.imgUrl}}" class="bg-img" ></image>
         </div>
         <div class="container-inner">
-            <text class="title">{{ $t('strings.title') }}</text>
-            <text class="detail_text">{{ $t('strings.detail') }}</text>
+            <text class="title" @click="startPlay">收听数：{{ musicInfo.views }}</text>
+            <text class="detail_text">收藏数：{{ musicInfo.heart }}</text>
         </div>
     </stack>
 </div>

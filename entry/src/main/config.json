@@ -36,11 +36,13 @@
         "label": "$string:entry_MainAbility",
         "type": "page",
         "metaData": {
-          "customizeData": [{
-            "name": "hwc-theme",
-            "value": "androidhwext:style/Theme.Emui.Light.NoTitleBar",
-            "extra": ""
-          }]
+          "customizeData": [
+            {
+              "name": "hwc-theme",
+              "value": "androidhwext:style/Theme.Emui.Light.NoTitleBar",
+              "extra": ""
+            }
+          ]
         },
         "forms": [
           {
@@ -49,11 +51,11 @@
             "scheduledUpdateTime": "10:30",
             "defaultDimension": "2*2",
             "name": "widget",
-            "description": "This is a service widget.",
+            "description": "随机推荐",
             "colorMode": "auto",
             "type": "JS",
             "supportDimensions": [
-              "2*2"
+              "2*2","2*4","4*4"
             ],
             "updateEnabled": true,
             "updateDuration": 1

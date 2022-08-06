@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 public class HTMLUtils {
     private static final String HE_ASMR_BASE_URL = "https://www.hentaiasmr.moe/";
     private static final String JP_ASMR_BASE_URL = "https://japaneseasmr.com/";
+    private static final String HANIME_BASE_URL = "https://hanime1.me/";
 
     /**获取链接页面dom
      * @param url
@@ -95,7 +96,7 @@ public class HTMLUtils {
     public static void getHeASMRMusicUrl(MessageParcel data, MessageParcel reply){
         String params = data.readString();
         JSONObject paramsObject=JSONObject.parseObject(params);
-        String musicUrl = HTMLUtils.getElements(paramsObject.getString("pageUrl"), 10, "meta[property='og:audio']").attr("content");
+        String musicUrl = analyzeHeASMRMusicUrl(paramsObject.getString("pageUrl"));
         reply.writeString(musicUrl);
     }
 
@@ -106,8 +107,22 @@ public class HTMLUtils {
         int pageIndex = paramsObject.getInteger("pageIndex");
         String filter = paramsObject.getString("filter");
         String search = paramsObject.getString("search");
-        String url = initHeASMRUrl(pageIndex,filter,search);
 
+        List<AsmrData> list = analyzeHeASMRPageInfo(pageIndex, filter, search);
+        //将本地业务响应返回给Js端的MessageParcel对象，当前仅支持String格式。
+        //以jsonObjectString 传出
+
+        reply.writeString(ZSONObject.toZSONString(list));
+    }
+
+    /**解析HetaiAsmr
+     * @param pageIndex
+     * @param filter
+     * @param search
+     * @return
+     */
+    public static List<AsmrData> analyzeHeASMRPageInfo(int pageIndex, String filter, String search){
+        String url = initHeASMRUrl(pageIndex,filter,search);
         List<AsmrData> list = new ArrayList<>();
         Document document = HTMLUtils.getDocument(url,10);
         Elements elements = HTMLUtils.getElements(document,"article");
@@ -122,10 +137,15 @@ public class HTMLUtils {
             AsmrData asmrData = new AsmrData(articleId,articleId,title,"",pageUrl,imgUrl,views,duration,heart);
             list.add(asmrData);
         }
-        //将本地业务响应返回给Js端的MessageParcel对象，当前仅支持String格式。
-        //以jsonObjectString 传出
+        return list;
+    }
 
-        reply.writeString(ZSONObject.toZSONString(list));
+    /**解析HetaiAsmrMusicUrl
+     * @param pageUrl
+     * @return
+     */
+    public static String analyzeHeASMRMusicUrl(String pageUrl){
+        return HTMLUtils.getElements(pageUrl, 10, "meta[property='og:audio']").attr("content");
     }
 
     private static String initHeASMRUrl(int pageIndex, String filter, String search) {
@@ -163,9 +183,11 @@ public class HTMLUtils {
         String params = data.readString();
         JSONObject paramsObject=JSONObject.parseObject(params);
         String pageUrl = paramsObject.getString("pageUrl");
+        reply.writeString(analyzeJpASMRMusicUrl(pageUrl));
+    }
 
+    public static String analyzeJpASMRMusicUrl(String pageUrl){
         Elements elements = HTMLUtils.getElements(pageUrl, 10, ".download_links a");
-//        Elements elements = HTMLUtils.getElements("https://japaneseasmr.com/1073/", 10, ".download_links a");
         for(Element element : elements){
             String text = element.text();
             String href = element.attr("href");
@@ -181,8 +203,7 @@ public class HTMLUtils {
                             ArrayList key = new ArrayList();
                             Collections.addAll(key,temp.getPath().split("/"));
                             if(key.size() > 2){
-                                reply.writeString(protocol + "://" + host + "/downloadAudio" + "?key="+key.get(2));
-                                return;
+                                return protocol + "://" + host + "/downloadAudio" + "?key="+key.get(2);
                             }
                         } catch (MalformedURLException e) {
                             e.printStackTrace();
@@ -191,6 +212,7 @@ public class HTMLUtils {
                 }
             }
         }
+        return "";
     }
 
     public static void getJpASMRPageInfo(MessageParcel data, MessageParcel reply){
@@ -202,6 +224,21 @@ public class HTMLUtils {
         String search = paramsObject.getString("search");
         String url = initJpASMRUrl(pageIndex,filter,search);
 
+        List<AsmrData> list = analyzeJpASMRPageInfo(pageIndex,filter,search);
+        //将本地业务响应返回给Js端的MessageParcel对象，当前仅支持String格式。
+        //以jsonObjectString 传出
+
+        reply.writeString(ZSONObject.toZSONString(list));
+    }
+
+    /**解析JpASMRPage
+     * @param pageIndex
+     * @param filter
+     * @param search
+     * @return
+     */
+    public static List<AsmrData> analyzeJpASMRPageInfo(int pageIndex, String filter, String search){
+        String url = initJpASMRUrl(pageIndex,filter,search);
         List<AsmrData> list = new ArrayList<>();
         Document document = HTMLUtils.getDocument(url,10);
         Elements elements = HTMLUtils.getElements(document,"ul.site-archive-posts>li .entry-preview-wrapper.clearfix");
@@ -227,10 +264,7 @@ public class HTMLUtils {
             AsmrData asmrData = new AsmrData(articleId,articleId,title,"",pageUrl,imgUrl,views,duration,heart);
             list.add(asmrData);
         }
-        //将本地业务响应返回给Js端的MessageParcel对象，当前仅支持String格式。
-        //以jsonObjectString 传出
-
-        reply.writeString(ZSONObject.toZSONString(list));
+        return list;
     }
 
 
@@ -263,5 +297,41 @@ public class HTMLUtils {
     }
 
     /*****************japaneseasmr end********************/
+
+    /****************hanime1.me start********************/
+
+    public static void getHAnimePageInfo(MessageParcel data, MessageParcel reply){
+        try {
+            String url = initHAnimeUrl(data, reply);
+            Elements elements = HTMLUtils.getElements(url,10,"");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String initHAnimeUrl(MessageParcel data, MessageParcel reply) throws UnsupportedEncodingException {
+        String params = data.readString();
+        JSONObject paramsObject=JSONObject.parseObject(params);
+        //搜索文字
+        String query = paramsObject.getString("query");
+        //类别
+        String genre = paramsObject.getString("genre");
+        //排序
+        String sort = paramsObject.getString("sort");
+        //发布日期
+        String year = paramsObject.getString("year");
+        String month = paramsObject.getString("month");
+        //时长
+        String duration = paramsObject.getString("duration");
+        StringBuilder queryString = new StringBuilder(HANIME_BASE_URL);
+        queryString.append("search?");
+        queryString.append("query=").append(query);
+        queryString.append("&genre=").append(genre);
+        queryString.append("&sort=").append(sort);
+        queryString.append("&year=").append(year);
+        queryString.append("&month=").append(month);
+        queryString.append("&duration=").append(duration);
+        return URLEncoder.encode(queryString.toString(), "UTF-8");
+    }
 
 }

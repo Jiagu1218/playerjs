@@ -74,6 +74,13 @@ export default {
             this.$set('status.playing',false)
             audio.reset()
         })
+//        audio.on('timeUpdate',(seekDoneTime)=>{
+//            if (typeof (seekDoneTime) == 'undefined') {
+//                console.info('audio seek fail');
+//                return;
+//            }
+//            console.log('audio seek success. seekDoneTime: ' + seekDoneTime);
+//        })
         audio.on('reset',()=>{
             clearInterval(this.intervalId)
             this.$set('status.playing',false)
@@ -91,7 +98,7 @@ export default {
     sliderChange(e){
         if(e.mode == 'end'){  /*当前动作 start 开始  move 移动中   end 结束*/
             console.log("value",e.value)  /*当前slider的进度值*/
-            this.audio.seek(e.value)
+            this.audio.seek(Math.floor(e.value))
         }
     },
     progressSwift(e){

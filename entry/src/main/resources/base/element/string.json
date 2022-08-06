@@ -16,5 +16,8 @@
       "name": "asmrserviceability_description",
       "value": "hap sample empty service"
     }
-  ]
+  ,{
+      "name": "serviceability_description",
+      "value": "hap sample empty service"
+    }]
 }

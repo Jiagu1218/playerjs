@@ -2,7 +2,16 @@
   "data": {
     "title": "Title",
     "detail": "Text",
-    "iconTitle": "Picture"
+    "iconTitle": "Picture",
+    "musicInfo": {
+      "title":"",
+      "musicUrl": "",
+      "imgUrl": "https://www.hentaiasmr.moe/wp-content/uploads/2022/08/rj404682_img_main.jpg",
+      "duration": "00:00",
+      "heart": "0",
+      "views": ""
+    },
+    "imageSrc": "https://www.hentaiasmr.moe/wp-content/uploads/2022/08/rj404682_img_main.jpg"
   },
   "actions": {
     "routerEvent": {
@@ -11,6 +20,12 @@
       "abilityName": "com.example.playerjs.MainAbility",
       "params": {
         "message": "add detail"
+      }
+    },
+    "startPlay": {
+      "action": "message",
+      "params": {
+        "message": "{{imageSrc}}"
       }
     }
   }
