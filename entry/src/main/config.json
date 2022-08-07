@@ -30,7 +30,7 @@
         ],
         "visible": true,
         "name": "com.example.playerjs.MainAbility",
-        "icon": "$media:icon",
+        "icon": "$media:he",
         "description": "$string:mainability_description",
         "formsEnabled": true,
         "label": "$string:entry_MainAbility",

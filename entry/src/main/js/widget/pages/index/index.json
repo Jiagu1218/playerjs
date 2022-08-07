@@ -19,7 +19,7 @@
       "bundleName": "com.example.playerjs",
       "abilityName": "com.example.playerjs.MainAbility",
       "params": {
-        "message": "add detail"
+        "music": "{{musicInfo}}"
       }
     },
     "startPlay": {

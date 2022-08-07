@@ -2,7 +2,7 @@
     <stack>
         <!--todo 页面跳转 -->
         <div class="container-img">
-            <image src="{{musicInfo.imgUrl}}" class="bg-img" ></image>
+            <image src="{{musicInfo.imgUrl}}" class="bg-img" @click="routerEvent"></image>
         </div>
         <div class="container-inner">
             <text class="title" @click="startPlay">收听数：{{ musicInfo.views }}</text>

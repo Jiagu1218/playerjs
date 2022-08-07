@@ -1,5 +1,6 @@
 package com.example.playerjs;
 
+import ohos.aafwk.content.IntentParams;
 import ohos.ace.ability.AceAbility;
 import ohos.aafwk.content.Intent;
 import com.example.playerjs.widget.controller.FormController;
@@ -8,6 +9,7 @@ import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.ability.ProviderFormInfo;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
+import ohos.utils.zson.ZSONObject;
 
 public class MainAbility extends AceAbility {
     public static final int DEFAULT_DIMENSION_2X2 = 2; //System-defined constant. Do not change its value.
@@ -19,6 +21,17 @@ public class MainAbility extends AceAbility {
     public void onStart(Intent intent) {
         AsmrServiceInternalAbility.register(this);
         JpAsmrServiceInternalAbility.register(this);
+        //服务卡片跳转 参考 https://developer.huawei.com/consumer/cn/codelabsPortal/carddetails/HarmonyOS-JSMovieCard
+        if (intentFromWidget(intent)){
+            Object paramsObject=intent.getParams().getParam("params");
+            if (paramsObject != null) {
+                ZSONObject zsonObject = ZSONObject.stringToZSON(paramsObject.toString());
+                IntentParams params = new IntentParams();
+                params.setParam("currentMusic", zsonObject.getZSONObject("music"));
+                params.setParam("tabsIndex",1);
+                setPageParams("/pages/index/index",params);
+            }
+        }
         super.onStart(intent);
     }
 
@@ -78,6 +91,7 @@ public class MainAbility extends AceAbility {
     @Override
     public void onNewIntent(Intent intent) {
         // Only response to it when starting from a service widget.
+        HiLog.info(TAG, "onNewIntent: " + intent.toString());
         if (intentFromWidget(intent)) {
             String newWidgetSlice = getRoutePageSlice(intent);
             if (topWidgetSlice == null || !topWidgetSlice.equals(newWidgetSlice)) {
