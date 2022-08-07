@@ -1,10 +1,12 @@
 package com.example.playerjs.widget.widget;
 
+import com.example.playerjs.MainAbility;
 import com.example.playerjs.entity.AsmrData;
 import com.example.playerjs.util.HTMLUtils;
 import com.example.playerjs.widget.controller.FormController;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.ability.FormBindingData;
+import ohos.aafwk.ability.FormException;
 import ohos.aafwk.ability.ProviderFormInfo;
 import ohos.aafwk.content.Intent;
 import ohos.app.Context;
@@ -26,7 +28,6 @@ public class WidgetImpl extends FormController {
     @Override
     public ProviderFormInfo bindFormData(long formId) {
         ZSONObject zsonObject = new ZSONObject();
-        zsonObject.put("title","体力");
         zsonObject.put("musicInfo",initData());
         ProviderFormInfo providerFormInfo = new ProviderFormInfo();
         providerFormInfo.setJsBindingData(new FormBindingData(zsonObject));
@@ -34,7 +35,7 @@ public class WidgetImpl extends FormController {
     }
 
     /**初始化数据
-     * @return
+     * @return 卡片musicInfo数据
      */
     private ZSONObject initData(){
         List<AsmrData> list = HTMLUtils.analyzeHeASMRPageInfo(1,"random","");
@@ -53,6 +54,14 @@ public class WidgetImpl extends FormController {
 
     @Override
     public void updateFormData(long formId, Object... vars) {
+        ZSONObject zsonObject = new ZSONObject();
+        zsonObject.put("musicInfo",initData());
+        FormBindingData formBindingData = new FormBindingData(zsonObject);
+        try {
+            ((MainAbility)context).updateForm(formId,formBindingData);
+        } catch (FormException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

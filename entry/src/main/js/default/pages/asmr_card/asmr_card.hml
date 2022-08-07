@@ -2,6 +2,7 @@
     <text class="title">{{item.title}}</text>
     <div class="img-div">
         <image class="img" src="{{item.imgUrl}}"></image>
+        <text class="heart">{{item.heart}}♥</text>
         <text class="views">{{item.views}}</text>
         <text class="time">{{item.duration}}</text>
     </div>

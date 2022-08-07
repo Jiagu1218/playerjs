@@ -5,7 +5,7 @@
             <image src="{{musicInfo.imgUrl}}" class="bg-img" @click="routerEvent"></image>
         </div>
         <div class="container-inner">
-            <text class="title" @click="startPlay">收听数：{{ musicInfo.views }}</text>
+            <text class="title">收听数：{{ musicInfo.views }}</text>
             <text class="detail_text">收藏数：{{ musicInfo.heart }}</text>
         </div>
     </stack>

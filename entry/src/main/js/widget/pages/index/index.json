@@ -1,8 +1,5 @@
 {
   "data": {
-    "title": "Title",
-    "detail": "Text",
-    "iconTitle": "Picture",
     "musicInfo": {
       "title":"",
       "musicUrl": "",
@@ -20,12 +17,6 @@
       "abilityName": "com.example.playerjs.MainAbility",
       "params": {
         "music": "{{musicInfo}}"
-      }
-    },
-    "startPlay": {
-      "action": "message",
-      "params": {
-        "message": "{{imageSrc}}"
       }
     }
   }
