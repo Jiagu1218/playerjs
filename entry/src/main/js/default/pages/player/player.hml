@@ -3,7 +3,7 @@
         <text class="title">
             {{ item.title }}
         </text>
-        <div class="img-div"><image class="img" src="{{item.imgUrl}}"></image></div>
+        <div class="img-div"><image class="img" src="{{item.imgUrl}}" @longpress="download({{item.imgUrl}})"></image></div>
         <div class="time-div">
             <text class="time time-left">{{item.duration.length>5?'00:00:00':'00:00'}}</text>
             <text class="time time-right">{{item.duration}}</text>

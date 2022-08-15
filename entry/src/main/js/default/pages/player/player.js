@@ -1,6 +1,5 @@
 import media from '@ohos.multimedia.media'
-import prompt from '@system.prompt'
-import request from '@ohos.request'
+import {downloadFile} from '../../common/js/download'
 
 export default {
     props:['music'],
@@ -141,19 +140,6 @@ export default {
         this.audio.release()
     },
     download(url){
-        //todo 文件下载
-        if(url.length > 0){
-            request.download({
-                url: url,
-                enableMetered:true
-            }).then((task)=>{
-                task.on('progress',(receiveSize,totalSize)=>{
-                    console.log(receiveSize)
-                    console.log(totalSize)
-                })
-            }).catch((error)=>{
-                prompt.showToast({message: error.message, duration:5000});
-            })
-        }
+        downloadFile(url)
     }
 }
