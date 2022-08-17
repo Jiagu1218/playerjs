@@ -1,5 +1,6 @@
 import media from '@ohos.multimedia.media'
 import {downloadFile} from '../../common/js/download'
+import prompt from '@system.prompt'
 
 export default {
     props:['music'],
@@ -7,6 +8,7 @@ export default {
         return {
             //定时任务id
             intervalId:-1,
+            musicList:new Array(),
             item:this.music,
             audio:null,
             status: {
@@ -14,7 +16,8 @@ export default {
                 loop:false,
                 percent:0,
                 sliderValue:0,
-                max:100
+                max:100,
+                listIndex:-1
             }
         }
     },
@@ -24,16 +27,21 @@ export default {
     onInit() {
         console.log('player onInit')
         this.$watch('music',(newMusic)=>{
-            this.$set('item',newMusic )
+            if(!this.musicList.some((music)=> music.articleId == newMusic.articleId)){
+                this.musicList.push(newMusic);
+            }
+            if(!this.status.playing){
+                this.$set('item',newMusic)
+            }
         })
         this.$watch('item',(newItem)=>{
-            if (this.audio != null){
-                this.$set('status.sliderValue',0)
-                let state = this.audio.state
-                if(state != 'idle'){
-                    //空闲
-                    this.audio.stop()
-                }
+            //查找在列表中的位置
+            this.$set('status.listIndex', this.musicList.findIndex((music)=>music.articleId == newItem.articleId))
+            if(this.audio != null){
+                this.audio.reset()
+            }
+            if(this.status.playing){
+                this.startPlay(newItem.musicUrl)
             }
         })
     },
@@ -52,16 +60,12 @@ export default {
             console.debug("播放")
             this.$set('status.playing', true)
             this.$set('status.max', audio.duration)
+
             this.intervalId=setInterval(()=>{
-//                let percent = ((audio.currentTime) / (audio.duration)) * 100
-//                this.$set('status.percent',percent)
                 this.$set('status.sliderValue',audio.currentTime)
-                //this.status.percent = this.audio.currentTime%1000
             },1000)
         })
         audio.on("finish",()=>{
-            clearInterval(this.intervalId)
-            this.$set('status.playing',false)
             audio.reset()
         })
         audio.on("pause",()=>{
@@ -69,8 +73,6 @@ export default {
             this.$set('status.playing',false)
         })
         audio.on('stop',()=>{
-            clearInterval(this.intervalId)
-            this.$set('status.playing',false)
             audio.reset()
         })
 //        audio.on('timeUpdate',(seekDoneTime)=>{
@@ -83,9 +85,10 @@ export default {
         audio.on('reset',()=>{
             clearInterval(this.intervalId)
             this.$set('status.playing',false)
-            audio.release()
-            audio = null
-            this.$set('audio',null)
+
+//            audio.release()
+//            audio = null
+//            this.$set('audio',null)
         })
         audio.on("error",(error)=>{
             console.info(`audio error called, errName is ${error.name}`);      //打印错误类型名称
@@ -104,21 +107,28 @@ export default {
         console.log("direction",e.direction)
         console.log("distance",e.distance)
     },
-    startPlay(url){
+    async startPlay(url){
         if(this.audio == null){
             this.initAudio()
         }
         let state = this.audio.state
-        if(state=='playing'){
-            //播放中
+
+        if(state == 'paused'){
+            //空闲
+            this.audio.play()
             return
         }else if(state == 'idle'){
-            //空闲
             this.audio.src = url
-//            this.audio.src = 'https://cdn-132.anonfiles.com/X4d7E31ey6/d375d590-1659380371/RJ405681.mp3'
+            this.audio.play()
+            return
+        }else if(state == 'stopped'){
+            this.audio.reset()
+            return
+        }else if(state == 'playing'){
+            this.audio.src = url
+            this.audio.play()
+            return
         }
-        this.audio.play()
-
     },
     stopPlay(){
         this.audio.stop()
@@ -141,5 +151,21 @@ export default {
     },
     download(url){
         downloadFile(url)
+    },
+    pre(){
+        if(this.status.listIndex<1){
+            prompt.showToast({message: '已经是第一首了'})
+        }else{
+            let music = this.musicList[this.status.listIndex-1]
+            this.$set('item',music)
+        }
+    },
+    next(){
+        if(this.status.listIndex>=this.musicList.length-1){
+            prompt.showToast({message: '已经是最后一首了'})
+        }else{
+            let music = this.musicList[this.status.listIndex+1]
+            this.$set('item', music)
+        }
     }
 }

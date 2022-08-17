@@ -9,11 +9,13 @@
             <text class="time time-right">{{item.duration}}</text>
         </div>
         <slider class="timeSlider" value="{{status.sliderValue}}" max="{{status.max}}" step="1000" mode="inset" @change="sliderChange"></slider>
-<!--        <progress class="timeProgress" percent="{{status.percent}}" ></progress>-->
         <div>
-            <button  class="audioBtn" @click="startPlay({{item.musicUrl}})" if="{{!status.playing}}">播放</button>
-            <button class="audioBtn" @click="pausedPlay" if="{{status.playing}}">暂停</button>
-<!--            <button class="audioBtn" >返回</button>-->
+            <button @click="pre" class="audioBtn">◀</button>
+            <block>
+                <button  class="audioBtn" @click="startPlay({{item.musicUrl}})" if="{{!status.playing}}">播放</button>
+                <button class="audioBtn" @click="pausedPlay" if="{{status.playing}}">暂停</button>
+            </block>
+            <button @click="next" class="audioBtn">▶</button>
             <button @click="setLoop" class="audioBtn">循环:{{status.loop?'开':'关'}}</button>
         </div>
     </block>
