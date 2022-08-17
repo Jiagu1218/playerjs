@@ -81,22 +81,6 @@ export default {
     },
     async itemLongPress(item){
         console.log(item.title)
-        //https://www.hentaiasmr.moe/
-        /*FeatureAbility.callAbility({
-            bundleName:'com.example.playerjs',
-            abilityName:'com.example.playerjs.AsmrServiceInternalAbility',
-            messageCode:2,
-            abilityType:1,
-            data: {
-                pageUrl:item.pageUrl
-            },
-            syncOption:0
-        }).then((result)=>{
-            item.musicUrl = result
-            this.currentMusic = item
-            this.tabsIndex = 1
-        })*/
-
         /***将从hentaiasmr获取到的列表通过名称在japaneseasmr中搜索获得心的页面链接重新解析**/
         let result = await FeatureAbility.callAbility({
             bundleName:'com.example.playerjs',

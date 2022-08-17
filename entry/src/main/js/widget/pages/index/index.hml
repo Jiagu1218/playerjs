@@ -1,6 +1,5 @@
 <div class="container">
     <stack>
-        <!--todo 页面跳转 -->
         <div class="container-img">
             <image src="{{musicInfo.imgUrl}}" class="bg-img" @click="routerEvent"></image>
         </div>

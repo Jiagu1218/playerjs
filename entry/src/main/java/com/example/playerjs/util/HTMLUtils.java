@@ -124,8 +124,8 @@ public class HTMLUtils {
     public static List<AsmrData> analyzeHeASMRPageInfo(int pageIndex, String filter, String search){
         String url = initHeASMRUrl(pageIndex,filter,search);
         List<AsmrData> list = new ArrayList<>();
-        Document document = HTMLUtils.getDocument(url,10);
-        Elements elements = HTMLUtils.getElements(document,"article");
+        Document document = getDocument(url,10);
+        Elements elements = getElements(document,"article");
         for (Element article:elements){
             int articleId = Integer.parseInt(article.attr("data-post-id"));
             String pageUrl = article.selectFirst("a").attr("href");
@@ -145,7 +145,7 @@ public class HTMLUtils {
      * @return
      */
     public static String analyzeHeASMRMusicUrl(String pageUrl){
-        return HTMLUtils.getElements(pageUrl, 10, "meta[property='og:audio']").attr("content");
+        return getElements(pageUrl, 10, "meta[property='og:audio']").attr("content");
     }
 
     private static String initHeASMRUrl(int pageIndex, String filter, String search) {
@@ -187,7 +187,7 @@ public class HTMLUtils {
     }
 
     public static String analyzeJpASMRMusicUrl(String pageUrl){
-        Elements elements = HTMLUtils.getElements(pageUrl, 10, ".download_links a");
+        Elements elements = getElements(pageUrl, 10, ".download_links a");
         for(Element element : elements){
             String text = element.text();
             String href = element.attr("href");
@@ -240,8 +240,8 @@ public class HTMLUtils {
     public static List<AsmrData> analyzeJpASMRPageInfo(int pageIndex, String filter, String search){
         String url = initJpASMRUrl(pageIndex,filter,search);
         List<AsmrData> list = new ArrayList<>();
-        Document document = HTMLUtils.getDocument(url,10);
-        Elements elements = HTMLUtils.getElements(document,"ul.site-archive-posts>li .entry-preview-wrapper.clearfix");
+        Document document = getDocument(url,10);
+        Elements elements = getElements(document,"ul.site-archive-posts>li .entry-preview-wrapper.clearfix");
         for (Element article:elements){
 
             String pageUrl = article.selectFirst(".entry-title a").attr("href");
@@ -303,7 +303,7 @@ public class HTMLUtils {
     public static void getHAnimePageInfo(MessageParcel data, MessageParcel reply){
         try {
             String url = initHAnimeUrl(data, reply);
-            Elements elements = HTMLUtils.getElements(url,10,"");
+            Elements elements = getElements(url,10,"");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -332,6 +332,12 @@ public class HTMLUtils {
         queryString.append("&month=").append(month);
         queryString.append("&duration=").append(duration);
         return URLEncoder.encode(queryString.toString(), "UTF-8");
+    }
+
+    /*********https://jmcomic.asia********/
+    public static void getComicPageList(int pageIndex,String order){
+        Document document = getDocument("https://jmcomic.asia/albums",10);
+        Elements elements = document.select(".thumb-overlay-albums").parents();
     }
 
 }

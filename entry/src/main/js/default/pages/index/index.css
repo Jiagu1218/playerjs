@@ -53,6 +53,9 @@
     justify-content: center;
     align-items: center;
 }
+.tab-bar-vertical{
+    width: 50px;
+}
 
 @media screen and (device-type: tablet) and (orientation: landscape) {
     .title {

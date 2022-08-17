@@ -66,7 +66,11 @@ export default {
             },1000)
         })
         audio.on("finish",()=>{
-            audio.reset()
+            if(!audio.loop){
+                this.next()
+            }else{
+                audio.reset()
+            }
         })
         audio.on("pause",()=>{
             clearInterval(this.intervalId)
@@ -154,6 +158,7 @@ export default {
     },
     pre(){
         if(this.status.listIndex<1){
+            this.audio.reset()
             prompt.showToast({message: '已经是第一首了'})
         }else{
             let music = this.musicList[this.status.listIndex-1]
@@ -162,6 +167,7 @@ export default {
     },
     next(){
         if(this.status.listIndex>=this.musicList.length-1){
+            this.audio.reset()
             prompt.showToast({message: '已经是最后一首了'})
         }else{
             let music = this.musicList[this.status.listIndex+1]
